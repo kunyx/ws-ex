@@ -1,4 +1,38 @@
+/*
+/// <reference path='../declarations/node.d.ts' />
+/// <reference path='../declarations/ws.d.ts' />
+*/
+'use strict';
 
+import WebSocket = require('ws');
+import model = require('./models');
+
+//var port: number = process.env.PORT || 3000;
+var port: number = 3000;
+var wsServer = WebSocket.Server;
+var server = new wsServer({ port: port });
+
+server.on('connection', ws => {
+	ws.on('message', pos_msg => {
+		try {
+            var msg: string = pos_msg.toString();
+			var posKijelzo: model.PosKijelzo = new model.PosKijelzo(msg);
+			broadcast(JSON.stringify(posKijelzo));
+		} catch (e) {
+			console.error(e.message);
+		}
+	});
+});
+
+function broadcast(data: string): void {
+	server.clients.forEach(client => {
+		client.send(data);
+	});	
+};
+
+console.log('Server is running on port', port);
+
+/*
 import * as http from 'http';
 import * as WebSocket from 'ws';
 import * as express from 'express';
@@ -11,13 +45,13 @@ const wss = new WebSocket.Server({ server });
 
 wss.on('connection', (ws: WebSocket) => {  
     //connection is up, let's add a simple simple event
-    /*
-    ws.on('message', (message: string) => {
-        //log the received message and send it back to the client
-        console.log('received: %s', message);
-        ws.send(`Hello, you sent -> ${message}`);
-    });
-    */
+    //---
+    //ws.on('message', (message: string) => {
+    //    //log the received message and send it back to the client
+    //    console.log('received: %s', message);
+    //    ws.send(`Hello, you sent -> ${message}`);
+    //});
+    //---
     ws.on('message', (message: string) => {
         //log the received message and send it back to the client
         console.log('received: %s', message);
@@ -43,3 +77,4 @@ wss.on('connection', (ws: WebSocket) => {
 server.listen(process.env.PORT || 8999, () => {
     console.log(`Server started on port ${server.address().port} :)`);
 });
+*/
