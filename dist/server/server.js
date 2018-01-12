@@ -1,45 +1,26 @@
-"use strict";
+'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
-const http = require("http");
-const WebSocket = require("ws");
-const express = require("express");
-const app = express();
-//initialize a simple http server
-const server = http.createServer(app);
-//initialize the WebSocket server instance
-const wss = new WebSocket.Server({ server });
-wss.on('connection', (ws) => {
-    //connection is up, let's add a simple simple event
-    /*
-    ws.on('message', (message: string) => {
-        //log the received message and send it back to the client
-        console.log('received: %s', message);
-        ws.send(`Hello, you sent -> ${message}`);
-    });
-    */
-    ws.on('message', (message) => {
-        //log the received message and send it back to the client
-        console.log('received: %s', message);
-        const broadcastRegex = /^broadcast\:/;
-        if (broadcastRegex.test(message)) {
-            message = message.replace(broadcastRegex, '');
-            //send back the message to the other clients
-            wss.clients
-                .forEach(client => {
-                if (client != ws) {
-                    client.send(`Hello, broadcast message -> ${message}`);
-                }
-            });
+var WebSocket = require("ws");
+var model = require("./models");
+var port = 3000;
+var wsServer = WebSocket.Server;
+var server = new wsServer({ port: port });
+server.on('connection', function (ws) {
+    ws.on('message', function (pos_msg) {
+        try {
+            var msg = pos_msg.toString();
+            var posKijelzo = new model.PosKijelzo(msg);
+            broadcast(JSON.stringify(posKijelzo));
         }
-        else {
-            ws.send(`Hello, you sent -> ${message}`);
+        catch (e) {
+            console.error(e.message);
         }
     });
-    //send immediatly a feedback to the incoming connection    
-    ws.send('Hi there, I am a WebSocket server');
 });
-//start our server
-server.listen(process.env.PORT || 8999, () => {
-    console.log(`Server started on port ${server.address().port} :)`);
-});
-//# sourceMappingURL=server.js.map
+function broadcast(data) {
+    server.clients.forEach(function (client) {
+        client.send(data);
+    });
+}
+;
+console.log('Server is running on port', port);
