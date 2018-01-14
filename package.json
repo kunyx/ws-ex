@@ -2,9 +2,10 @@
   "name": "ws-ex",
   "version": "1.0.0",
   "description": "WebSocket + Node.js + Express + Typescript",
-  "main": "index.js",
+  "main": "kiosk.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon kiosk.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
   "devDependencies": {
     "@types/express": "^4.11.0",
     "@types/ws": "^3.2.1",
+    "nodemon": "^1.14.11",
     "typescript": "^2.6.2"
   },
   "optionalDependencies": {
