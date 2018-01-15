@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var http = require('http');
 var WebSocket = require("ws");
+var express = require('express');
 //var path = require('path');
 //var filePath = path.join(__dirname, './client.js');
 alert('KIOSK ws-ugyfel elinditva');
