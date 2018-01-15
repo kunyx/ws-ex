@@ -5,7 +5,7 @@
   "main": "kiosk.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon kiosk.js"
+    "start": "nodemon src/kiosk.js"
   },
   "repository": {
     "type": "git",
