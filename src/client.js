@@ -1,3 +1,6 @@
+var $ = require('jquery');
+var http = require('http');
+var WebSocket = require("ws");
 //var path = require('path');
 //var filePath = path.join(__dirname, './client.js');
 alert('KIOSK ws-ugyfel elinditva');
@@ -5,8 +8,6 @@ console.log('KIOSK ws-ugyfel elinditva');
 $(function () {
   var content = $('#content');
   var mac = $('#mac')
-  var WebSocket = require("ws");
-  var http = require('http');
   var connection = new WebSocket('ws://localhost:3000');
   window.WebSocket = window.WebSocket || window.MozWebSocket;
   if (!window.WebSocket) {
